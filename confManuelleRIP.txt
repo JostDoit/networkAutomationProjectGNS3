@@ -10,17 +10,26 @@ end
 --> Penser à remplacer le 1/0 par numeroInterface/0
 --> Et à rentrer la bonne addresse.
 
+enable
+conf t
 interface Gigabit interface GigabitEthernet1/0
 ipv6 enable
 ipv6 address ipv6-address/prefix-length
 no shutdown
+end
 
 3. Activation de RIP sur le routeur
 
+enable
+conf t
 ipv6 router rip ripng
 redistribute connected
+end
 
 4. Activation de RIP sur chaque interface
 
+enable
+conf t
 interface Gigabit interface GigabitEthernet1/0      //A faire pour chaque interface: 2/0, 3/0, ...
 ipv6 rip ripng enable
+end
