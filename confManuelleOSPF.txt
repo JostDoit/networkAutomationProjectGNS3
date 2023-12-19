@@ -5,7 +5,7 @@ end
 
 enable
 conf t
-interface Gigabit interface GigabitEthernet1/0
+interface GigabitEthernet1/0
 ipv6 enable
 ipv6 address ipv6-address/prefix-length
 no shutdown
@@ -13,11 +13,11 @@ end
 
 enable
 conf t
-ipv6 router ospf 0
+ipv6 router ospf 1
 router-id X.X.X.X
 end
 
 enable
 conf t
 interface GigabitEthernet1/0 
-ipv6 ospf 0 area 0
+ipv6 ospf 1 area 0
