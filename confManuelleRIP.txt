@@ -1,0 +1,26 @@
+1. Activation routage ipv6
+
+enable
+conf t
+ipv6 unicast-routing
+end
+
+2. Activation des interfaces
+
+--> Penser à remplacer le 1/0 par numeroInterface/0
+--> Et à rentrer la bonne addresse.
+
+interface Gigabit interface GigabitEthernet1/0
+ipv6 enable
+ipv6 address ipv6-address/prefix-length
+no shutdown
+
+3. Activation de RIP sur le routeur
+
+ipv6 router rip ripng
+redistribute connected
+
+4. Activation de RIP sur chaque interface
+
+interface Gigabit interface GigabitEthernet1/0      //A faire pour chaque interface: 2/0, 3/0, ...
+ipv6 rip ripng enable
