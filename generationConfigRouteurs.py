@@ -58,11 +58,11 @@ for router in routers:
     #Recuperation des infos du routeur
     id = router["id"]
     As = router["as"]
+    neighborsAddressList = []
+    isASBR = False
     for i in asList:
         if i["id"] == As:
             igp = i["igp"]
-
-    print(f"id: {id}\nAs: {As}\nigp: {igp}\negp: {egp}\n\n")
     
     #Creation du fichier de configuration du routeur
     if not os.path.exists(outputPath):
@@ -89,19 +89,19 @@ for router in routers:
 
     #Interface de Loopback
     res.write("interface Loopback0\n"
-                "no ip address\n"
-                f"ipv6 address {id}::{id}/128\n"
-                "ipv6 enable\n")
+              " no ip address\n"
+              f" ipv6 address {id}::{id}/128\n"
+              " ipv6 enable\n")
     if(igp == "rip"):
-        res.write(f"ipv6 rip {ripName} enable\n")
+        res.write(f" ipv6 rip {ripName} enable\n")
     elif(igp == "ospf"):
-        res.write(f"ipv6 ospf {ospfProcess} area 0\n")
+        res.write(f" ipv6 ospf {ospfProcess} area 0\n")
     res.write("!\n")
 
     #Interfaces
     for adj in router["adj"]:
         neighbourID = adj["neighbor"]
-        for router in routers:          #Verifier si pas de conflit avec routeur précédent
+        for router in routers:
             if router["id"]==neighbourID:           
                 neighbourAs = router["as"]
         
@@ -109,35 +109,40 @@ for router in routers:
             #Generation de l'addresse IP
             #Cas IGP
             #Partie Prefixe
-            if str(link["protocol-type"]) == "igp":
+            if link["protocol-type"] == "igp":
                 ip = asPrefix[As]
                 #Partie Sufixe
                 # Si sous reseau pas encore initialise i.e premiere interface
                 if matIdSousReseauxAs[id-1][neighbourID-1] == 0 and matIdSousReseauxAs[neighbourID-1][id-1]==0:
                     dicoSousRes[As] += 1
                     matIdSousReseauxAs[id-1][neighbourID-1], matIdSousReseauxAs[neighbourID-1][id-1] = dicoSousRes[As], dicoSousRes[As]
-                    ip += ":0:" + str(matIdSousReseauxAs[id-1][neighbourID-1]) + ":0:0::1"
+                    ip += ":0:" + str(matIdSousReseauxAs[id-1][neighbourID-1]) + ":0:1"
                 
                 else: # sous reseau deja cree
-                    ip += ":0:" + str(matIdSousReseauxAs[id-1][neighbourID-1]) + ":0:0::2"
+                    ip += ":0:" + str(matIdSousReseauxAs[id-1][neighbourID-1]) + ":0:2"
 
             #Cas EGP
             else:
+                isASBR = True
                 ip = "2001:100:1:"
 
                 if matAdjAs[As - 64513][neighbourAs - 64513] == 0:
                     compteurLienAS += 1
                     matAdjAs[As - 64513][neighbourAs - 64513] = compteurLienAS
-                    ip += str(compteurLienAS) + "::1"
+                    neighborAddress = ip + str(compteurLienAS) + "::2"
+                    neighborsAddressList.append([neighborAddress,neighbourAs])
+                    ip += str(compteurLienAS) + "::1"                   
+
                 else: # sous reseau deja cree
+                    neighborAddress = ip + str(matAdjAs[As - 64513][neighbourAs - 64513]) + "::1"
+                    neighborsAddressList.append([neighborAddress,neighbourAs])
                     ip += str(matAdjAs[As - 64513][neighbourAs - 64513]) + "::2"
             
-            #Interface
-            
+            #Interface            
             res.write(f"interface {link['interface']}\n"
                       " no ip address\n"
                       " negotiation auto\n"
-                      f" ipv6 address {ip}/64\n"
+                      f" ipv6 address {ip}/96\n"
                       " ipv6 enable\n")
 
             if link["protocol-type"] == "igp" :
@@ -146,9 +151,51 @@ for router in routers:
                 if igp == "ospf":
                     res.write(f" ipv6 ospf {ospfProcess} area 0\n")                               
             res.write("!\n")
+    #EGP
+    res.write(f"router bgp {As}\n"
+              f" bgp router-id {id}.{id}.{id}.{id}\n"
+              " bgp log-neighbor-changes\n"
+              " no bgp default ipv4-unicast\n")
+
+    for router in routers:
+        if router["as"] == As:
+            routerID = router["id"]
+            if routerID != id:                
+                res.write(f" neighbor {routerID}::{routerID} remote-as {As}\n")
+                res.write(f" neighbor {routerID}::{routerID} update-source Loopback0\n")
+    if isASBR :
+        for egpNeighborsAddress in neighborsAddressList:
+            ipNeighb = egpNeighborsAddress[0]
+            asNeighb = egpNeighborsAddress[1]
+            res.write(f" neighbor {ipNeighb} remote-as {asNeighb}\n")
+    
+    res.write(" !\n"
+              " address-family ipv4\n"
+              " exit-address-family\n"
+              " !\n"
+              " address-family ipv6\n")
+    
+    for router in routers:
+        if router["as"] == As:
+            routerID = router["id"]
+            if routerID != id:
+                res.write(f"  neighbor {routerID}::{routerID} activate\n")
+    
+    if isASBR:
+        for egpNeighborsAddress in neighborsAddressList:
+            res.write(f"  neighbor {egpNeighborsAddress[0]} activate\n")
+    
+    res.write(" exit-address-family\n!\n")
+
+    res.write("ip forward-protocol nd\n"
+              "no ip http server\n"
+              "no ip http secure-server\n"
+              "!\n")
+
     # IGP
     if(igp == "rip"):
-        res.write(f"ipv6 router rip {ripName}\n")
+        res.write(f"ipv6 router rip {ripName}\n"
+                  " redistribute connected\n")
                   
     if(igp == "ospf"):
         res.write(f"ipv6 router ospf {ospfProcess}\n"
