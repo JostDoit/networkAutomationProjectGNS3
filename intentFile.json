@@ -1,19 +1,18 @@
 {   
-    "constant":{
+    "constantes":{
         "ripName": "ripng",
-        "ospfPid": 1
+        "ospfPid": 1,
+        "egp": "bgp"
     },
     "as":[
         {
             "id":64513,
             "igp": "rip",
-            "egp": "bgp",
             "ip-prefix": "2001:100:1:1"
         },
         {
             "id":64514,
             "igp": "ospf",
-            "egp": "bgp",
             "ip-prefix": "2001:100:1:2"
         }
     ],
