@@ -10,7 +10,6 @@ intentFile = loadJSON()
 outputPath = "./configRouteur"
 
 #Lecture du Intent File
-
 #Routeurs
 routers = intentFile["routers"]
 nbRouter = len(routers)
@@ -18,12 +17,12 @@ nbRouter = len(routers)
 #AS
 asList = intentFile["as"]
 nbAs = len(asList)
-asPrefix = {}
+asPrefix = {}               #Dictionnaire contenant les couples idAs / Préfixe réseau associé
 for i in range(nbAs):
     asInfos = asList[i]
     asPrefix[asInfos["id"]] = asInfos["ip-prefix"]
 
-dicoSousRes = {} # Dictionnaire contenant les index des derniers sous-reseaux utilises pour chaque AS
+dicoSousRes = {} #Dictionnaire contenant les index des derniers sous-reseaux utilises pour chaque AS.
 for index in asPrefix:
     dicoSousRes[index] = 0
 
