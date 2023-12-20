@@ -87,7 +87,7 @@ for i in range(1,8):
 
    
 data = {}
-data["ReseauRIP"] = networkRIP
+data["RIP"] = networkRIP
 
 with open("./confReseau.json", "w") as f:
     json.dump(data, f, indent=4)
