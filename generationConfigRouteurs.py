@@ -30,13 +30,6 @@ for i in range(0,nbRouter):
     for j in range(nbRouter):
         matIdSousReseauxAs[i].append(0)
 
-# Initialisation d'un matrice contenant les numeros des sous-reseaux entre chaque AS
-matAdjAs = [] 
-for k in range(0,nbAs):
-    matAdjAs.append([])
-    for j in range(nbAs):
-        matAdjAs[k].append(0)
-
 compteurLienAS = 0
 
 #Constantes
@@ -84,10 +77,10 @@ for router in routers:
               " no ip address\n"
               f" ipv6 address {id}::{id}/128\n"
               " ipv6 enable\n")
-    """if(igp == "rip"):
+    if(igp == "rip"):
         res.write(f" ipv6 rip {ripName} enable\n")
     elif(igp == "ospf"):
-        res.write(f" ipv6 ospf {ospfProcess} area 0\n")"""
+        res.write(f" ipv6 ospf {ospfProcess} area 0\n")
     res.write("!\n")
 
     #Interfaces
@@ -209,4 +202,4 @@ for router in routers:
     
     res.close()
 
-    print(f"Router {id} generated") 
+    print(f"Configuration du routeur {id} generee !") 
