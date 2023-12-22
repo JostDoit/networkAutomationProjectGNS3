@@ -1,12 +1,9 @@
 import json, os
 
-def loadJSON():
-    f = open("./intentFile.json", "r")
-    data = json.load(f)
-    f.close()
-    return data
+f = open("./intentFile.json", "r")
+intentFile = json.load(f)
+f.close()
 
-intentFile = loadJSON()
 outputPath = "./configRouteur"
 
 #Lecture du Intent File
@@ -23,8 +20,8 @@ for i in range(nbAs):
     asPrefix[asInfos["id"]] = asInfos["ip-prefix"]
 
 dicoSousRes = {} #Dictionnaire contenant les index des derniers sous-reseaux utilises pour chaque AS.
-for index in asPrefix:
-    dicoSousRes[index] = 0
+for id in asPrefix:
+    dicoSousRes[id] = 0
 
 # Initialisation d'une matrice contenant les numeros des sous-reseaux entre chaque routeur
 matIdSousReseauxAs = [] 
@@ -42,14 +39,10 @@ for k in range(0,nbAs):
 
 compteurLienAS = 0
 
-
-
 #Constantes
 egp = intentFile["constantes"]["egp"]
 ripName = intentFile["constantes"]["ripName"]
 ospfProcess = str(intentFile["constantes"]["ospfPid"])
-
-
 
 #Ecriture de la configuration pour chaque routeur
 for router in routers:
