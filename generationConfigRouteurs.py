@@ -84,10 +84,10 @@ for router in routers:
               " no ip address\n"
               f" ipv6 address {id}::{id}/128\n"
               " ipv6 enable\n")
-    if(igp == "rip"):
+    """if(igp == "rip"):
         res.write(f" ipv6 rip {ripName} enable\n")
     elif(igp == "ospf"):
-        res.write(f" ipv6 ospf {ospfProcess} area 0\n")
+        res.write(f" ipv6 ospf {ospfProcess} area 0\n")"""
     res.write("!\n")
 
     #Interfaces
@@ -103,32 +103,30 @@ for router in routers:
             #Partie Prefixe
             if link["protocol-type"] == "igp":
                 ip = asPrefix[As]
-                #Partie Sufixe
-                # Si sous reseau pas encore initialise i.e premiere interface
-                if matIdSousReseauxAs[id-1][neighbourID-1] == 0 and matIdSousReseauxAs[neighbourID-1][id-1]==0:
-                    dicoSousRes[As] += 1
-                    matIdSousReseauxAs[id-1][neighbourID-1], matIdSousReseauxAs[neighbourID-1][id-1] = dicoSousRes[As], dicoSousRes[As]
-                    ip += ":0:" + str(matIdSousReseauxAs[id-1][neighbourID-1]) + ":0:1"
-                
-                else: # sous reseau deja cree
-                    ip += ":0:" + str(matIdSousReseauxAs[id-1][neighbourID-1]) + ":0:2"
-
-            #Cas EGP
             else:
                 isASBR = True
                 ip = "2001:100:1:"
-
-                if matAdjAs[As - 64513][neighbourAs - 64513] == 0:
+                
+            #Partie Sufixe
+            # Si sous reseau pas encore initialise i.e premiere interface
+            if matIdSousReseauxAs[id-1][neighbourID-1] == 0 and matIdSousReseauxAs[neighbourID-1][id-1]==0:                
+                if link["protocol-type"] == "igp":
+                    dicoSousRes[As] += 1
+                    matIdSousReseauxAs[id-1][neighbourID-1], matIdSousReseauxAs[neighbourID-1][id-1] = dicoSousRes[As], dicoSousRes[As]           
+                    ip += ":0:" + str(matIdSousReseauxAs[id-1][neighbourID-1]) + ":0:1"
+                else:
                     compteurLienAS += 1
-                    matAdjAs[As - 64513][neighbourAs - 64513] = compteurLienAS
+                    matIdSousReseauxAs[id-1][neighbourID-1], matIdSousReseauxAs[neighbourID-1][id-1] = compteurLienAS, compteurLienAS
                     neighborAddress = ip + str(compteurLienAS) + "::2"
                     neighborsAddressList.append([neighborAddress,neighbourAs])
-                    ip += str(compteurLienAS) + "::1"                   
-
-                else: # sous reseau deja cree
-                    neighborAddress = ip + str(matAdjAs[As - 64513][neighbourAs - 64513]) + "::1"
+                    ip += str(compteurLienAS) + "::1"            
+            else: # sous reseau deja cree
+                if link["protocol-type"] == "igp":
+                    ip += ":0:" + str(matIdSousReseauxAs[id-1][neighbourID-1]) + ":0:2"
+                else:
+                    neighborAddress = ip + str(matIdSousReseauxAs[id-1][neighbourID-1]) + "::1"
                     neighborsAddressList.append([neighborAddress,neighbourAs])
-                    ip += str(matAdjAs[As - 64513][neighbourAs - 64513]) + "::2"
+                    ip += str(matIdSousReseauxAs[id-1][neighbourID-1]) + "::2"
             
             #Interface            
             res.write(f"interface {link['interface']}\n"
@@ -137,10 +135,9 @@ for router in routers:
                       f" ipv6 address {ip}/96\n"
                       " ipv6 enable\n")
 
-            if link["protocol-type"] == "igp" :
-                if igp == "rip":
-                    res.write(f" ipv6 rip {ripName} enable\n")
-                if igp == "ospf":
+            if link["protocol-type"] == "igp" and igp == "rip":
+                res.write(f" ipv6 rip {ripName} enable\n")
+            elif igp == "ospf":
                     res.write(f" ipv6 ospf {ospfProcess} area 0\n")                               
             res.write("!\n")
     #EGP
@@ -191,7 +188,7 @@ for router in routers:
                   
     if(igp == "ospf"):
         res.write(f"ipv6 router ospf {ospfProcess}\n"
-                  " router-id {id}.{id}.{id}.{id}\n")        
+                  f" router-id {id}.{id}.{id}.{id}\n")        
     res.write("!\n")
 
     res.write("control-plane\n"
