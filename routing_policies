@@ -1,7 +1,133 @@
 # BGP Policies
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Comprendre l’attribut « Community » : "https://www.expertcisco.fr/bgp/bgp-community-attribute"
+
+
+
+
+
+
+_________________________________________________________
+
+
+
+
+
+
+
+
+Rappel du TP : 
+
+- Créer une ACL : --> variable
+conf t
+ipv6 access-list <nameACL>
+{permit/deny} <ipv6-source-prefix> <ipv6-dst-prefix>
+
+- Créer route-map : 
+conf t
+route-map <map-tag> {permit/deny} <seq number>
+match ipv6 address <nameACL>
+(ne pas oublier qu'il y a un deny implixite, alors mettre une règle comme dans un firewall qui si aucun n'est matché laisse passer --> même nom dans le <map-tag>)
+route-map <map-tag> permit 50 (//allow all)
+
+conf t
+router bgp 64501
+address-familly ipv6 unicast
+neighbor <ipv6-address> route-map <map-tag> {in/out} //en général il faut mettre l'adresse de son voisin, dépend de la situation
+
+
+
+
+
+
+
+_________________________________________________________
+
+
+
+
+
+
+
+
+
+Pour vérifier que l'attribut "community" existe : show ip bgp 1.0.0.0 (en ipv4) <--> (en ipv6) show ipv6 bgp <ipv6-address>
+Cet attribut peut prendre 4 valeurs prédéf : 
+a.    Internet
+b.    Local-as
+c.    No-advertise
+d.    No-export
+=> par défaut aucun n'est utilisé
+
+
+****** no-advertise ---> configuré sur R1 alors R2 pourra voir les community mises en place en faisant : show ipv6 bgp <ipv6-address>
+access-list 1 permit 1.0.0.0 0.255.255.255
+!
+route-map TEST permit 10
+ match ip address 1
+ set community no-advertise
+!
+route-map TEST permit 20
+!
+router bgp 100
+ no synchronization
+ bgp router-id 1.1.1.1
+ bgp log-neighbor-changes
+ network 1.0.0.0
+ neighbor 10.1.12.2 remote-as 2300
+ neighbor 10.1.12.2 send-community
+ neighbor 10.1.12.2 route-map TEST out
+ no auto-summary
+******
+
+
+
+_________________________________________________________
+
+
+
+
+
 
 ### Tagger les routes reçues par ses voisins eBGP en utilisiant les "communities" (commande community) : Learn how to tag routes received from eBGP neighbours with communities
 Idées : 
 - 
 - 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
