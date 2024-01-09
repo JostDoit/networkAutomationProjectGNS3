@@ -56,7 +56,7 @@ for router in routers:
 
     #Ecriture de l'en-tete
     res.write(f"#{igp} sur R{id} - routeur avec {len(router['adj'])} interfaces utilisees : \n")
-    res.write(f"version 15.2\n"
+    res.write("version 15.2\n"
               "service timestamps debug datetime msec\n"
               "service timestamps log datetime msec\n"
               f"hostname R{id}\n"
