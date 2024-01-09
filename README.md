@@ -29,7 +29,7 @@ router bgp 64512
   address-family ipv6 unicast
     neighbor @voisin route-map test in
 
-### Ne pas propager les mises à jour contenant 111 afin de ne pas propager l'AS 111 et ainsi éviter le profit de bande passante
+#### Ne pas propager les mises à jour contenant 111 afin de ne pas propager l'AS 111 et ainsi éviter le profit de bande passante
 
 ip as-path access-list 1 permit _111_
 route-map map_tag deny 20
@@ -37,7 +37,7 @@ route-map map_tag deny 20
 route-map map_tag permit 50
 neighbor @voisin route-map map_tag out
 
-### AS_PATH Prepending
+#### AS_PATH Prepending
 --> appliqué à un préfixe (un seul préfixe prendra plus de sauts)
 access-list 10 permit @prefix
 route-map cisco permit 20
