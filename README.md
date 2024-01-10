@@ -68,7 +68,7 @@ neigh @voisin route-map cisco out
 
 
 → finalement j'ai utilisé une commande qui le fait automatiquement, il faut juste ajouter redistribute connected pour être trkl ->  :
- address-family ipv6
+address-family ipv6
   redistribute connected
   aggregate-address 2001:100:1:3::/64 summary-only
 
