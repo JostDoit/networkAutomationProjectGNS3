@@ -63,6 +63,10 @@ neigh @voisin route-map cisco out
 > C. utiliser set communi et mettre en place des règles de filtrage OUT
 
 > D. local pref 1 client 2 peer 3 provider (le client paye pour recevoir du traffic donc normal de lui envoiyer en premier)
-- pour partager les network avec BGP soit une route statique sur le router avec un prefix plus grd que le réseau qu'on annonce et normalement tt le monde aura access depuis l'exétérieur aux routeur internes ou utilisation de no syncronization (se renseigner) --> propage le préfixe sans rien de plus EZ (objectif de donner les préfixe globale et rendre tt acessible si pas devoir être accessible sur internet JE NE SAIS PLUS COMMENT IL A DIT)
+- pour partager les network avec BGP soit une route statique sur le router avec un prefix plus grd que le réseau qu'on annonce et normalement tt le monde aura access depuis l'exétérieur aux routeur internes ou utilisation de no syncronization (se renseigner) --> propage le préfixe sans rien de plus EZ (objectif de donner les préfixe globale et rendre tt acessible si pas devoir être accessible sur internet JE NE SAIS PLUS COMMENT IL A DIT) -> exemple d'orange espagne en TD
 > "A prefix is synchronized in BGP if there is a matching prefix in the IGP. If a BGP learned prefix is not synchronized, the prefix will not be inserted into the routing table and will not be advertised to external peers...". "Usually, a BGP speaker does not advertise a route to an external neighbor unless that route is local or exists in the IGP. The no synchronization command allows the Cisco IOS software to advertise a network route without waiting for the IGP. "
-  
+-> finalement j'ai utilisé une commande qui le fait automatiquement, il faut juste ajouter redistribute connected pour être trkl ->  :
+ address-family ipv6
+  redistribute connected
+  aggregate-address 2001:100:1:3::/64 summary-only
+
