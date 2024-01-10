@@ -67,7 +67,7 @@ neigh @voisin route-map cisco out
 > "A prefix is synchronized in BGP if there is a matching prefix in the IGP. If a BGP learned prefix is not synchronized, the prefix will not be inserted into the routing table and will not be advertised to external peers...". "Usually, a BGP speaker does not advertise a route to an external neighbor unless that route is local or exists in the IGP. The no synchronization command allows the Cisco IOS software to advertise a network route without waiting for the IGP. "
 
 
----- finalement j'ai utilisé une commande qui le fait automatiquement, il faut juste ajouter redistribute connected pour être trkl ->  :
+→ finalement j'ai utilisé une commande qui le fait automatiquement, il faut juste ajouter redistribute connected pour être trkl ->  :
  address-family ipv6
   redistribute connected
   aggregate-address 2001:100:1:3::/64 summary-only
