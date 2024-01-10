@@ -62,4 +62,5 @@ neigh @voisin route-map cisco out
 
 > D. local pref 1 client 2 peer 3 provider (le client paye pour recevoir du traffic donc normal de lui envoiyer en premier)
 - pour partager les network avec BGP soit une route statique sur le router avec un prefix plus grd que le réseau qu'on annonce et normalement tt le monde aura access depuis l'exétérieur aux routeur internes ou utilisation de no syncronization (se renseigner) --> propage le préfixe sans rien de plus EZ (objectif de donner les préfixe globale et rendre tt acessible si pas devoir être accessible sur internet JE NE SAIS PLUS COMMENT IL A DIT)
+> "A prefix is synchronized in BGP if there is a matching prefix in the IGP. If a BGP learned prefix is not synchronized, the prefix will not be inserted into the routing table and will not be advertised to external peers...".
   
