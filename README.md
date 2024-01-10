@@ -1,5 +1,7 @@
 # networkAutomationProjectGNS3
 
+> https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#toc-hId--463182681
+
 ### Définition d'une interface sur internet en utilisant des adresses IPv6 unicast globales : 
 
 2001:0db8:3c4d:0015:1234:5678:9abc:def0 > exemple d'une adresse sur internet attribuée à l'interface d'un hôte
