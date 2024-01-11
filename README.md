@@ -72,6 +72,16 @@ neigh @voisin route-map cisco out
 address-family ipv6
 
   redistribute connected
+
+
+
+
+
+
+
+ address-family ipv6
+  redistribute connected
+  aggregate-address 2001:100:1:3::/64 summary-only
   
   aggregate-address 2001:100:1:3::/64 summary-only
 
