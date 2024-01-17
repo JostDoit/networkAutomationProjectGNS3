@@ -1,10 +1,10 @@
 import json, os
 
-f = open("./intentFile.json", "r")
+f = open("./intentFileTestNetwork.json", "r")
 intentFile = json.load(f)
 f.close()
 
-outputPath = "./configRouteur"
+outputPath = "./configRouteurTestNetwork"
 
 #Lecture du Intent File
 #Routeurs
@@ -44,6 +44,7 @@ for router in routers:
     id = router["id"]
     As = router["as"]
     neighborsAddressList = []
+    interfacesEGP = []
     isASBR = False
     for i in asList:
         if i["id"] == As:
@@ -97,8 +98,8 @@ for router in routers:
             if link["protocol-type"] == "igp":
                 ip = asPrefix[As]
             else:
-                isASBR = True
-                ip = "2001:100:1:"
+                isASBR = True                
+                ip = "2001:101:"
                 
             #Partie Sufixe
             # Si sous reseau pas encore initialise i.e premiere interface
@@ -106,7 +107,7 @@ for router in routers:
                 if link["protocol-type"] == "igp":
                     dicoSousRes[As] += 1
                     matIdSousReseauxAs[id-1][neighbourID-1], matIdSousReseauxAs[neighbourID-1][id-1] = dicoSousRes[As], dicoSousRes[As]           
-                    ip += ":0:" + str(matIdSousReseauxAs[id-1][neighbourID-1]) + ":0:1"
+                    ip += str(dicoSousRes[As])
                 else:
                     compteurLienAS += 1
                     matIdSousReseauxAs[id-1][neighbourID-1], matIdSousReseauxAs[neighbourID-1][id-1] = compteurLienAS, compteurLienAS
@@ -115,7 +116,7 @@ for router in routers:
                     ip += str(compteurLienAS) + "::1"            
             else: # sous reseau deja cree
                 if link["protocol-type"] == "igp":
-                    ip += ":0:" + str(matIdSousReseauxAs[id-1][neighbourID-1]) + ":0:2"
+                    ip += str(matIdSousReseauxAs[id-1][neighbourID-1])
                 else:
                     neighborAddress = ip + str(matIdSousReseauxAs[id-1][neighbourID-1]) + "::1"
                     neighborsAddressList.append([neighborAddress,neighbourAs])
@@ -124,14 +125,20 @@ for router in routers:
             #Interface            
             res.write(f"interface {link['interface']}\n"
                       " no ip address\n"
-                      " negotiation auto\n"
-                      f" ipv6 address {ip}/96\n"
-                      " ipv6 enable\n")
+                      " negotiation auto\n")
+            if link["protocol-type"] == "egp":
+                res.write(f"ipv6 address {ip}/96\n")
+            else:
+                res.write(f" ipv6 address {ip}/64 eui-64\n")
+            
+            res.write(" ipv6 enable\n")
 
             if link["protocol-type"] == "igp" and igp == "rip":
                 res.write(f" ipv6 rip {ripName} enable\n")
             elif igp == "ospf":
-                    res.write(f" ipv6 ospf {ospfProcess} area 0\n")                               
+                res.write(f" ipv6 ospf {ospfProcess} area 0\n")
+                if link["protocol-type"] == "egp":
+                    interfacesEGP.append(link['interface'])
             res.write("!\n")
     #EGP
     res.write(f"router bgp {As}\n"
@@ -157,6 +164,16 @@ for router in routers:
               " !\n"
               " address-family ipv6\n")
     
+    #A décocher pour tout annoncer pour les tests
+    if isASBR:
+        res.write("  redistribute connected\n")
+        if(igp == "rip"):
+            res.write(f"  redistribute rip {ripName}\n")
+        if(igp == "ospf"):
+            res.write(f"  redistribute ospf {ospfProcess}\n")
+    
+    #res.write(f"  aggregate-address {asPrefix[As]}:/48 summary-only\n")
+
     for router in routers:
         if router["as"] == As:
             routerID = router["id"]
@@ -181,7 +198,12 @@ for router in routers:
                   
     if(igp == "ospf"):
         res.write(f"ipv6 router ospf {ospfProcess}\n"
-                  f" router-id {id}.{id}.{id}.{id}\n")        
+                  f" router-id {id}.{id}.{id}.{id}\n")
+        if isASBR:           
+            for interfaceName in interfacesEGP:
+                res.write(f" passive-interface {interfaceName}\n")
+        if isASBR: #A decocher pour tout annoncer
+            res.write(" redistribute connected\n")     
     res.write("!\n")
 
     res.write("control-plane\n"

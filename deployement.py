@@ -1,7 +1,7 @@
 import os, shutil
 
-configDir = "./configRouteur"
-dynamipsDir = "../IGP/NAP/project-files/dynamips/"
+configDir = "./configRouteurTestNetwork"
+dynamipsDir = "../testNetwork/project-files/dynamips/"
 
 routersDir = []
 
