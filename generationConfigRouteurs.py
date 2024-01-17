@@ -164,15 +164,15 @@ for router in routers:
               " !\n"
               " address-family ipv6\n")
     
-    #A décocher pour tout annoncer pour les tests
+    """#A décocher pour tout annoncer pour les tests
     if isASBR:
         res.write("  redistribute connected\n")
         if(igp == "rip"):
             res.write(f"  redistribute rip {ripName}\n")
         if(igp == "ospf"):
-            res.write(f"  redistribute ospf {ospfProcess}\n")
+            res.write(f"  redistribute ospf {ospfProcess}\n")"""
     
-    #res.write(f"  aggregate-address {asPrefix[As]}:/48 summary-only\n")
+    res.write(f"  aggregate-address {asPrefix[As]}:/48 summary-only\n")
 
     for router in routers:
         if router["as"] == As:
@@ -202,8 +202,8 @@ for router in routers:
         if isASBR:           
             for interfaceName in interfacesEGP:
                 res.write(f" passive-interface {interfaceName}\n")
-        if isASBR: #A decocher pour tout annoncer
-            res.write(" redistribute connected\n")     
+        #if isASBR: #A decocher pour tout annoncer
+            #res.write(" redistribute connected\n")     
     res.write("!\n")
 
     res.write("control-plane\n"
