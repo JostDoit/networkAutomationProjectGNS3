@@ -33,31 +33,38 @@
             "id":64517,
             "igp": "ospf",
             "ip-prefix": "2001:100:5:",
-            "provider": [64520]
+            "provider": [64520],
+            "customers": [64513, 64514]
         },
         {
             "id":64518,
             "igp": "ospf",
             "ip-prefix": "2001:100:6:",
-            "provider": [64520]
+            "provider": [64520],
+            "customers": [64515],
+            "peers": [64519]
         },
         {
             "id":64519,
             "igp": "ospf",
             "ip-prefix": "2001:100:7:",
-            "provider": [64521]
+            "provider": [64521],
+            "customers": [64516],
+            "peers": [64518]
         },
         {
             "id":64520,
             "igp": "ospf",
             "ip-prefix": "2001:100:8:",
-            "provider": []
+            "customers": [64517],
+            "peers": [64521]
         },
         {
             "id":64521,
             "igp": "ospf",
             "ip-prefix": "2001:100:9:",
-            "provider": []
+            "customers": [64518],
+            "peers": [64520]
         }
     ],
     "routers": [
