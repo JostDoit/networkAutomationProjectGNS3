@@ -1,6 +1,6 @@
 import json, os
 
-f = open("./intentFileTestNetwork.json", "r")
+f = open("./intentFiles/intentFileTestNetwork.json", "r")
 intentFile = json.load(f)
 f.close()
 
@@ -107,7 +107,7 @@ for router in routers:
                 if link["protocol-type"] == "igp":
                     dicoSousRes[As] += 1
                     matIdSousReseauxAs[id-1][neighbourID-1], matIdSousReseauxAs[neighbourID-1][id-1] = dicoSousRes[As], dicoSousRes[As]           
-                    ip += str(dicoSousRes[As])
+                    ip += (str(dicoSousRes[As]) + "::" + str(id))
                 else:
                     compteurLienAS += 1
                     matIdSousReseauxAs[id-1][neighbourID-1], matIdSousReseauxAs[neighbourID-1][id-1] = compteurLienAS, compteurLienAS
@@ -116,7 +116,7 @@ for router in routers:
                     ip += str(compteurLienAS) + "::1"            
             else: # sous reseau deja cree
                 if link["protocol-type"] == "igp":
-                    ip += str(matIdSousReseauxAs[id-1][neighbourID-1])
+                    ip += (str(matIdSousReseauxAs[id-1][neighbourID-1]) + "::" + str(id))
                 else:
                     neighborAddress = ip + str(matIdSousReseauxAs[id-1][neighbourID-1]) + "::1"
                     neighborsAddressList.append([neighborAddress,neighbourAs])
@@ -129,7 +129,8 @@ for router in routers:
             if link["protocol-type"] == "egp":
                 res.write(f"ipv6 address {ip}/96\n")
             else:
-                res.write(f" ipv6 address {ip}/64 eui-64\n")
+                res.write(f" ipv6 address {ip}/64\n")
+                #res.write(f" ipv6 address {ip}/64 eui-64\n")
             
             res.write(" ipv6 enable\n")
 
@@ -158,11 +159,14 @@ for router in routers:
             asNeighb = egpNeighborsAddress[1]
             res.write(f" neighbor {ipNeighb} remote-as {asNeighb}\n")
     
+    
+    
     res.write(" !\n"
               " address-family ipv4\n"
               " exit-address-family\n"
               " !\n"
               " address-family ipv6\n")
+    res.write(f"  aggregate-address {asPrefix[As]}:/48 summary-only\n")
     
     """#A décocher pour tout annoncer pour les tests
     if isASBR:
@@ -171,8 +175,6 @@ for router in routers:
             res.write(f"  redistribute rip {ripName}\n")
         if(igp == "ospf"):
             res.write(f"  redistribute ospf {ospfProcess}\n")"""
-    
-    res.write(f"  aggregate-address {asPrefix[As]}:/48 summary-only\n")
 
     for router in routers:
         if router["as"] == As:
