@@ -36,6 +36,9 @@ compteurLienAS = 0
 egp = intentFile["constantes"]["egp"]
 ripName = intentFile["constantes"]["ripName"]
 ospfProcess = str(intentFile["constantes"]["ospfPid"])
+customerPrefValue = intentFile["constantes"]["customerPref"]
+peerPrefValue = intentFile["constantes"]["peerPref"]
+providerPrefValue = intentFile["constantes"]["providerPref"]
 
 #Ecriture de la configuration pour chaque routeur
 for router in routers:
@@ -143,7 +146,7 @@ for router in routers:
                 try:
                     res.write(f" ipv6 ospf cost {link['ospfCost']}\n")
                 except:
-                    continue  
+                    pass  
             res.write("!\n")
     #EGP
     res.write(f"router bgp {As}\n"
@@ -181,7 +184,7 @@ for router in routers:
         if(igp == "ospf"):
             res.write(f"  redistribute ospf {ospfProcess}\n")"""
 
-    res.write(f" network {asPrefix[As]}:/48\n")
+    res.write(f"  network {asPrefix[As]}:/48\n")
 
     for router in routers:
         if router["as"] == As:
@@ -190,8 +193,30 @@ for router in routers:
                 res.write(f"  neighbor {routerID}::{routerID} activate\n")
     
     if isASBR:
+        for a in asList:                
+            if a["id"] == As:
+                try:
+                    asCustomers = a["customers"]
+                except:
+                    asCustomers = []
+                try:
+                    asPeers = a["peers"]
+                except:
+                    asPeers = []
+                try:
+                    asProviders = a["providers"]
+                except:
+                    asProviders = []
+                break
+        
         for egpNeighborsAddress in neighborsAddressList:
             res.write(f"  neighbor {egpNeighborsAddress[0]} activate\n")
+            if egpNeighborsAddress[1] in asCustomers:
+                res.write(f"  neighbor {egpNeighborsAddress[0]} route-map customer in\n")
+            elif egpNeighborsAddress[1] in asPeers:
+                res.write(f"  neighbor {egpNeighborsAddress[0]} route-map peer in\n")
+            elif egpNeighborsAddress[1] in asProviders:
+                res.write(f"  neighbor {egpNeighborsAddress[0]} route-map provider in\n")
     
     res.write(" exit-address-family\n!\n")
 
@@ -212,8 +237,21 @@ for router in routers:
         if isASBR:           
             for interfaceName in interfacesEGP:
                 res.write(f" passive-interface {interfaceName}\n")
-        #if isASBR: #A decocher pour tout annoncer
-            #res.write(" redistribute connected\n")     
+            #A decocher pour tout annoncer
+            #res.write(" redistribute connected\n")
+    if isASBR:
+        ##Route-maps
+        res.write("!\n"
+                  "route-map customer permit 10\n"
+                  f" set local-preference {customerPrefValue}\n"
+                  "!\n"
+                  "route-map peer permit 10\n"
+                  f" set local-preference {peerPrefValue}\n"
+                  "!\n"
+                  "route-map provider permit 10\n"
+                  f" set local-preference {providerPrefValue}\n"
+                  "!\n")        
+                
     res.write("!\n")
 
     res.write("control-plane\n"

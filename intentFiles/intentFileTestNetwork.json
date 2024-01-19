@@ -2,7 +2,10 @@
     "constantes":{
         "ripName": "ripng",
         "ospfPid": 1,
-        "egp": "bgp"
+        "egp": "bgp",
+        "customerPref": 200,
+        "peerPref": 100,
+        "providerPref": 50
     },
     "as":[
         {
@@ -571,7 +574,8 @@
                 "neighbor":19,
                 "links":[{ 
                     "interface":"GigabitEthernet1/0",
-                    "protocol-type": "igp"
+                    "protocol-type": "igp",
+                    "ospfCost" : 50
                 }
                 ]
             }
