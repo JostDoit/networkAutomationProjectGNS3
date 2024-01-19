@@ -166,7 +166,8 @@ for router in routers:
               " exit-address-family\n"
               " !\n"
               " address-family ipv6\n")
-    res.write(f"  aggregate-address {asPrefix[As]}:/48 summary-only\n")
+    
+    #res.write(f"  aggregate-address {asPrefix[As]}:/48 summary-only\n")
     
     """#A décocher pour tout annoncer pour les tests
     if isASBR:
@@ -175,6 +176,8 @@ for router in routers:
             res.write(f"  redistribute rip {ripName}\n")
         if(igp == "ospf"):
             res.write(f"  redistribute ospf {ospfProcess}\n")"""
+
+    res.write(f" network {asPrefix[As]}:/48\n")
 
     for router in routers:
         if router["as"] == As:
@@ -193,6 +196,7 @@ for router in routers:
               "no ip http secure-server\n"
               "!\n")
 
+    res.write(f"ipv6 route {asPrefix[As]}:/48 Null0\n")
     # IGP
     if(igp == "rip"):
         res.write(f"ipv6 router rip {ripName}\n"
