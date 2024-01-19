@@ -524,7 +524,8 @@
                 "neighbor":18,
                 "links":[{ 
                     "interface":"GigabitEthernet4/0",
-                    "protocol-type": "igp"
+                    "protocol-type": "igp",
+                    "ospfCost" : 50
                 }
                 ]
             },

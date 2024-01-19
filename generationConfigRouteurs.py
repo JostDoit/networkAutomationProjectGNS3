@@ -127,7 +127,7 @@ for router in routers:
                       " no ip address\n"
                       " negotiation auto\n")
             if link["protocol-type"] == "egp":
-                res.write(f"ipv6 address {ip}/96\n")
+                res.write(f" ipv6 address {ip}/96\n")
             else:
                 res.write(f" ipv6 address {ip}/64\n")
                 #res.write(f" ipv6 address {ip}/64 eui-64\n")
@@ -140,6 +140,10 @@ for router in routers:
                 res.write(f" ipv6 ospf {ospfProcess} area 0\n")
                 if link["protocol-type"] == "egp":
                     interfacesEGP.append(link['interface'])
+                try:
+                    res.write(f" ipv6 ospf cost {link['ospfCost']}\n")
+                except:
+                    continue  
             res.write("!\n")
     #EGP
     res.write(f"router bgp {As}\n"
