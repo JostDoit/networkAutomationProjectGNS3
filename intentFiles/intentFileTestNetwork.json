@@ -175,7 +175,7 @@
                 ]
             },
             {
-                "neighbor":10,
+                "neighbor":9,
                 "links":[{ 
                     "interface":"GigabitEthernet3/0",
                     "protocol-type": "egp"
