@@ -272,4 +272,4 @@ for router in routers:
     
     res.close()
 
-    print(f"Configuration du routeur {id} generee !") 
+    print(f"Configuration du routeur {id} generee !")
