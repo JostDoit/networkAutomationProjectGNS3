@@ -39,6 +39,7 @@ ospfProcess = str(intentFile["constantes"]["ospfPid"])
 customerPrefValue = intentFile["constantes"]["customerPref"]
 peerPrefValue = intentFile["constantes"]["peerPref"]
 providerPrefValue = intentFile["constantes"]["providerPref"]
+blockCommunityValue = intentFile["constantes"]["blockCommunityValue"]
 
 #Ecriture de la configuration pour chaque routeur
 for router in routers:
@@ -193,6 +194,7 @@ for router in routers:
                 res.write(f"  neighbor {routerID}::{routerID} activate\n")
     
     if isASBR:
+        #On récupère les infos de l'as auquel appartient le routeur
         for a in asList:                
             if a["id"] == As:
                 try:
@@ -207,21 +209,39 @@ for router in routers:
                     asProviders = a["providers"]
                 except:
                     asProviders = []
+                try:
+                    asPeerToBlock = a["peerToBlock"]
+                except:
+                    asPeerToBlock = []
                 break
         
         for egpNeighborsAddress in neighborsAddressList:
             res.write(f"  neighbor {egpNeighborsAddress[0]} activate\n")
+
+            #LocalPref client>peer>provider
             if egpNeighborsAddress[1] in asCustomers:
                 res.write(f"  neighbor {egpNeighborsAddress[0]} route-map customer in\n")
             elif egpNeighborsAddress[1] in asPeers:
                 res.write(f"  neighbor {egpNeighborsAddress[0]} route-map peer in\n")
             elif egpNeighborsAddress[1] in asProviders:
                 res.write(f"  neighbor {egpNeighborsAddress[0]} route-map provider in\n")
-    
-    res.write(" exit-address-family\n!\n")
+            
+            #Blocking Peer Community
+            if egpNeighborsAddress[1] in asPeerToBlock:
+                res.write(f"  neighbor {egpNeighborsAddress[0]} route-map BlockRoutePeer out\n")
+            
 
-    res.write("ip forward-protocol nd\n"
-              "no ip http server\n"
+    
+    res.write(" exit-address-family\n!\n"
+              "ip forward-protocol nd\n!\n")
+
+    if isASBR and len(asPeerToBlock) > 0:
+        res.write("ip bgp-community new-format\n"
+                  f"ip community-list standard blockPeerPeer permit {As}:{blockCommunityValue}\n"
+                  f"ip as-path access-list 10 deny _{blockCommunityValue}$"
+                  "\n!\n")
+
+    res.write("no ip http server\n"
               "no ip http secure-server\n"
               "!\n")
 
@@ -250,7 +270,14 @@ for router in routers:
                   "!\n"
                   "route-map provider permit 10\n"
                   f" set local-preference {providerPrefValue}\n"
-                  "!\n")        
+                  "!\n")
+        if len(asPeerToBlock) > 0:
+            for _ in asPeerToBlock:                
+                res.write("route-map BlockRoutePeer permit 10\n"
+                        " match as-path 10\n"
+                        f" match community {As}:{blockCommunityValue}\n"
+                        f" set community {As}:{blockCommunityValue}\n"
+                        "!\n")
                 
     res.write("!\n")
 

@@ -9,6 +9,10 @@ ip bgp-community new-format
 !
 ip community-list standard peer-peer permit 64518:100
 !
+!
+!
+!
+!
 route-map BlockRoutePeer permit 10
 !
 !

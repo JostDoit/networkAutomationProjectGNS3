@@ -5,7 +5,8 @@
         "egp": "bgp",
         "customerPref": 200,
         "peerPref": 100,
-        "providerPref": 50
+        "providerPref": 50,
+        "blockCommunityValue": 100
     },
     "as":[
         {
@@ -45,7 +46,8 @@
             "ip-prefix": "2001:100:6:",
             "provider": [64520],
             "customers": [64515],
-            "peers": [64519]
+            "peers": [64519],
+            "peerToBlock": [64519]
         },
         {
             "id":64519,
