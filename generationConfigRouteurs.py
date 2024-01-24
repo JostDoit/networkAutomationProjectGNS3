@@ -229,6 +229,11 @@ for router in routers:
             #Blocking Peer Community
             if egpNeighborsAddress[1] in asPeerToBlock:
                 res.write(f"  neighbor {egpNeighborsAddress[0]} route-map BlockRoutePeer out\n")
+                for router in routers:
+                    if router["as"] == As:
+                        routerID = router["id"]
+                        if routerID != id:
+                            res.write(f"  neighbor {routerID}::{routerID} send-community\n")
             
 
     

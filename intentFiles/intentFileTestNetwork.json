@@ -55,7 +55,8 @@
             "ip-prefix": "2001:100:7:",
             "provider": [64521],
             "customers": [64516],
-            "peers": [64518]
+            "peers": [64518],
+            "peerToBlock": [64518]
         },
         {
             "id":64520,
