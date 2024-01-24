@@ -114,7 +114,7 @@ router bgp 64518
   neighbor 6::6 activate
   neighbor 7::7 activate
   neighbor 2001:101:7::2 activate
-  neighbor 2001:101:7::2 route-map filter-list out
+  neighbor 2001:101:7::2 route-map BlockRoutePeer out
   neighbor 2001:101:8::2 activate
  exit-address-family
 !
