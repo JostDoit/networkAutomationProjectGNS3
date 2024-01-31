@@ -6,14 +6,16 @@
         "customerPref": 200,
         "peerPref": 100,
         "providerPref": 50,
-        "blockCommunityValue": 100
+        "blockPeerValue": 100,
+        "blockRegionValue": 200
     },
     "as":[
         {
             "id":64513,
             "igp": "rip",
             "ip-prefix": "2001:100:1:",
-            "provider": [64517]
+            "provider": [64517],
+            "community-to-use": [["BLOCKREGION", 200]]
         },
         {
             "id":64514,
@@ -63,7 +65,8 @@
             "igp": "ospf",
             "ip-prefix": "2001:100:8:",
             "customers": [64517],
-            "peers": [64521]
+            "peers": [64521],
+            "regionToBlock": [64521]
         },
         {
             "id":64521,
@@ -83,6 +86,14 @@
                 "links":[{
                     "interface":"GigabitEthernet1/0",
                     "protocol-type": "egp"
+                }
+                ]
+            },
+            {
+                "neighbor":23,
+                "links":[{
+                    "interface":"GigabitEthernet2/0",
+                    "protocol-type": "igp"
                 }
                 ]
             }
@@ -696,6 +707,20 @@
             },
             {
                 "neighbor":21,
+                "links":[{ 
+                    "interface":"GigabitEthernet1/0",
+                    "protocol-type": "igp"
+                }
+                ]
+            }
+        ]
+    },
+    {
+        "id":23,
+        "as":64513,
+        "adj":[
+            {
+                "neighbor":1,
                 "links":[{ 
                     "interface":"GigabitEthernet1/0",
                     "protocol-type": "igp"

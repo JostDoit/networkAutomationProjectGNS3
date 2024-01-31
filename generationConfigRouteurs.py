@@ -39,7 +39,8 @@ ospfProcess = str(intentFile["constantes"]["ospfPid"])
 customerPrefValue = intentFile["constantes"]["customerPref"]
 peerPrefValue = intentFile["constantes"]["peerPref"]
 providerPrefValue = intentFile["constantes"]["providerPref"]
-blockCommunityValue = intentFile["constantes"]["blockCommunityValue"]
+blockPeerValue = intentFile["constantes"]["blockPeerValue"]
+blockRegionValue = intentFile["constantes"]["blockRegionValue"]
 
 #Ecriture de la configuration pour chaque routeur
 for router in routers:
@@ -213,6 +214,14 @@ for router in routers:
                     asPeerToBlock = a["peerToBlock"]
                 except:
                     asPeerToBlock = []
+                try:
+                    asCommunityToUse = a["community-to-use"]
+                except:
+                    asCommunityToUse = []
+                try:
+                    asRegionToBlock = a["regionToBlock"]
+                except:
+                    asRegionToBlock = []
                 break
         
         for egpNeighborsAddress in neighborsAddressList:
@@ -235,6 +244,15 @@ for router in routers:
                         if routerID != id:
                             res.write(f"  neighbor {routerID}::{routerID} send-community\n")
             
+            #Blocking Region
+            for region in asRegionToBlock:
+                if egpNeighborsAddress[1] == region:
+                    res.write(f"  neighbor {egpNeighborsAddress[0]} route-map RM_BLOCK_CLIENT_ROUTE_TO_{region} out\n")
+            
+            if len(asCommunityToUse) > 0:
+                for community in asCommunityToUse:
+                    res.write(f"  neighbor {egpNeighborsAddress[0]} route-map RM{community[0]} out\n")
+            
 
     
     res.write(" exit-address-family\n!\n"
@@ -242,15 +260,15 @@ for router in routers:
 
     if isASBR and len(asPeerToBlock) > 0:
         res.write("ip bgp-community new-format\n"
-                  f"ip community-list standard blockPeerPeer permit {As}:{blockCommunityValue}\n"
-                  f"ip as-path access-list 10 deny _{blockCommunityValue}$"
+                  f"ip community-list standard blockPeerPeer permit {As}:{blockPeerValue}\n"
+                  f"ip as-path access-list 10 deny _{blockPeerValue}$"
                   "\n!\n")
 
     res.write("no ip http server\n"
               "no ip http secure-server\n"
               "!\n")
-
-    res.write(f"ipv6 route {asPrefix[As]}:/48 Null0\n")
+    if isASBR:
+        res.write(f"ipv6 route {asPrefix[As]}:/48 Null0\n")
     # IGP
     if(igp == "rip"):
         res.write(f"ipv6 router rip {ripName}\n"
@@ -276,13 +294,44 @@ for router in routers:
                   "route-map provider permit 10\n"
                   f" set local-preference {providerPrefValue}\n"
                   "!\n")
+        
         if len(asPeerToBlock) > 0:
             for _ in asPeerToBlock:                
                 res.write("route-map BlockRoutePeer permit 10\n"
                         " match as-path 10\n"
-                        f" match community {As}:{blockCommunityValue}\n"
-                        f" set community {As}:{blockCommunityValue}\n"
+                        f" match community {As}:{blockPeerValue}\n"
+                        f" set community {As}:{blockPeerValue}\n"
                         "!\n")
+        
+        if len(asRegionToBlock) > 0:
+            stop = False
+            for region in asRegionToBlock:
+                for router in routers:
+                    if router["as"] == region:                
+                        for adj in router["adj"]:
+                            neighbourID = adj["neighbor"]                            
+                            if neighbourID == id:                
+                                res.write(f"ipv6 prefix-list seq 10 deny any\n"
+                                        f"ipv6 prefix-list PL_BLOCK_CLIENT_ROUTE_TO_{region} seq 20 permit ::/0\n"
+                                        f"route-map RM_BLOCK_CLIENT_ROUTE_TO_{region} permit 10\n"
+                                        f" match community {As}:{blockRegionValue}\n"
+                                        f" match ipv6 address prefix-list PL_BLOCK_CLIENT_ROUTE_TO_{region}\n"
+                                        "!\n")
+                                stop = True
+                                break
+                    if stop:
+                        break
+                if stop:
+                    break
+        
+        if len(asCommunityToUse) > 0:
+            for community in asCommunityToUse:
+                res.write(f"ipv6 prefix-list PL{community[0]} seq 10 permit {asPrefix[As]}:/48\n"
+                          f"route-map RM{community[0]} permit 10\n"
+                          f" match ip address prefix-list PL{community[0]}\n"
+                          f" set community {As}:{community[1]}\n"
+                          "!\n")
+    
                 
     res.write("!\n")
 
