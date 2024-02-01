@@ -21,8 +21,8 @@
 > Ce dossier contient un réseau PROVIDER-PEER-CLIENT utilisant en grande partie OSPF (car nous avions déjà démontré la configuration RIP précédemment).
 
 ### Explication de l'architecture
-- Notre dossier GNS3 est composé de 9 AS, toutes utilisants des numéros d'AS privées. 
-- Nos AS sont reliées par le protocole de routage inter-AS BGP et dans les AS, nous utilisons OSPF (sauf dans l'AS en bas à gauche mais celà n'a pas d'importance).
+- Notre dossier GNS3 est composé de 9 AS, toutes utilisant des numéros d'AS privées.
+- Nos AS sont reliées par le protocole de routage inter-AS BGP et dans les AS, nous utilisons OSPF (sauf dans l'AS au sud-ouest, mais cela, n'importe peu.).
 
 ### BGP Local-Preference 
 Nous avons mis en place des **local preferences** spécifiques. Étant donné que nous sommes dans un réseau composé de provider-client-peer, nous devons préférer certains liens à d'autres pour joindre une destination. Dans notre intent file, nous définissons si l'AS est un PEER par exemple ce qui nous permet de prendre des décisions sur la valeur de la local preference définit au début de notre intent file. Par exemple, les liens :
