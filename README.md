@@ -2,9 +2,9 @@
 ## Table des matières
 
 1. [IGP](#IGP)
-   1.1 [Interfaces passives](#Interfaces_passives)
-4. [BGP](#BGP)
-5. [Type de déploiement](#contribuer)
+	-[Interfaces passives](#Interfaces_passives)
+3. [BGP](#BGP)
+4. [Type de déploiement](#contribuer)
 6. [Explication de l'architecture](#Archi)
 7. [BGP Local-Preference](#localPref)
 8. [Règles de commununautés](#Policies)
