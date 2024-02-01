@@ -16,7 +16,7 @@
 
 
 ## Dossier "configuration_finale"
-> Ce dossier contient un réseau PROVIDER-PEER-CLIENT utilisant en grande partie OSPF (car nous avions déjà démontré la configuration RIP précédement).
+> Ce dossier contient un réseau PROVIDER-PEER-CLIENT utilisant en grande partie OSPF (car nous avions déjà démontré la configuration RIP précédemment).
 
 ### Explication de l'architecture
 - choix des AS, comment fonctionne ...
@@ -49,6 +49,11 @@ Pour implémenter ces règles de communauté CISCO dans votre propre infrastruct
 
 Assurez-vous de comprendre les implications de chaque règle de communauté avant de les déployer dans votre infrastructure. Certaines règles bloquent le traffic dans certaines directions donc les communanautés sont à utiliser en connaissance de cause.
 
+#### Explication de l'intent file
+
 Nous espérons que ce projet vous sera utile dans la mise en œuvre de politiques de routage BGP efficaces et dans la gestion avancée des communautés CISCO. 
+
+#### Telnet
+- Utilisation de génération.py
 
 ### Métriques OSPF
