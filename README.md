@@ -2,7 +2,7 @@
 ## Table des matières
 
 - [IGP](#IGP)
-  -[Interfaces passives](#Interfaces_passives)
+  - [Interfaces passives](#Interfaces_passives)
 - [BGP](#BGP)
   - [iBGP](#iBGP)
   - [eBGP](#eBGP)
