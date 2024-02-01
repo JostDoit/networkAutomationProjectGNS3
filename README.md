@@ -87,7 +87,7 @@ address-family ipv6
 
 # Règles de Communautés CISCO
 
-Bienvenue dans le projet des Règles de Communautés CISCO ! Ce projet met en lumière deux situations distinctes illustrant l'utilisation efficace des politiques de routage BGP et des valeurs de communautés.
+Ce projet met en avant dans deux situations distinctes l'utilisation efficace des politiques de routage BGP et des valeurs de communautés.
 
 ## Contexte
 
