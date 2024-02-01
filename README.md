@@ -1,12 +1,15 @@
 # Projet GNS3
 ## Table des matières
 
-1. [IGP](#IGP)
- -[Interfaces passives](#Interfaces_passives)
-3. [BGP](#BGP)
-4. [Type de déploiement](#contribuer)
-6. [Explication de l'architecture](#Archi)
-7. [BGP Local-Preference](#localPref)
+- [IGP](#IGP)
+  -[Interfaces passives](#Interfaces_passives)
+- [BGP](#BGP)
+  -[iBGP](#iBGP)
+  -[eBGP](#eBGP)
+- [Type de déploiement](#contribuer)
+  - [Configuration finale](#configuration_finale)
+  - [Explication de l'architecture] (#Explication)
+- [BGP Local-Preference](#localPref)
 8. [Règles de commununautés](#Policies)
 9. [Telnet](#telnet)
 10. [Métriques OSPF](#metric)
