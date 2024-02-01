@@ -2,7 +2,7 @@
 ## Table des matières
 
 1. [IGP](#IGP)
-2. [Interfaces passives](#Interfaces passives)
+2. [interface](#Interfaces passives)
 3. [BGP](#BGP)
 4. [Type de déploiement](#contribuer)
 5. [Licence](#licence)
