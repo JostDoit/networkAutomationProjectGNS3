@@ -82,3 +82,6 @@ Nous espérons que ce projet vous sera utile dans la mise en œuvre de politique
 - Utilisation de génération.py
 
 ### Métriques OSPF
+- Nous avons manipulé les métriques OSPF, ces dernières nous permettent de prioriser des liens dans notre routage OSPF (lors du calcul de Dijkstra). Dans notre cas, nous avons utilisé les métriques OSPF dans l'AS du nord-est afin de le traffic d'optimiser le traffic. 
+
+En effet, dans un sens nous passons par un lien tandis que dans l'autre sens, nous priorisons le traffic par un autre lien (en réalité on ajoute du poids à un liens pour passer par l'autre, on ne le priorise pas directement).
