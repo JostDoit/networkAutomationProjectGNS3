@@ -28,6 +28,7 @@ Nous avons mis en place des **local preferences** spécifiques. Étant donné qu
 - entre **client - peer** : ont une local preference définit à 200 afin de prioriser ce lien
 - entre **peer - peer** : ont une local preference définit à 100
 - entre **provider - peer** : ont une local preference définit à 50
+
 En effet, dans notre architecture on **priorise** les liens clients, puis peer et enfin provider.
 
 ### Règles de Communautés CISCO
