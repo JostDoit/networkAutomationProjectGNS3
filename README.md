@@ -5,11 +5,13 @@
 
 ### IGP
 
-### Interfaces passives
+#### Interfaces passives
 
-### iBGP FULL MESH
+###BGP
 
-### eBGP
+#### iBGP FULL MESH
+
+#### eBGP
 
 ### Type de déployement
 - Drag and drop
