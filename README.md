@@ -5,15 +5,15 @@
 
 ### IGP
 
-Dans la première configuration, on se propose d’étudier deux domaines voisins : L’AS 64513 configuré selon le protocole RIP et le second AS 64514 sous OSPF. Il communiquent entre eux par le protocole BGP. Le but de cette configuration est d’implémenter ces protocoles de routage dans des réseaux de petites tailles. Pour vérifier les performances de chacun en matière de convergence, vous pouvez supprimer ou ajouter des liens. RIP, de part sa philosophie de protocole à vecteur de distance est difficilement contrôlable lorsque le réseau commence à prendre de l’ampleur.
+Dans la première configuration, on se propose d’étudier deux domaines voisins : L’AS A configuré selon le protocole RIP et le second AS B sous OSPF. Il communiquent entre eux par le protocole BGP. Le but de cette configuration est d’implémenter ces protocoles de routage dans des réseaux de petites tailles. Pour vérifier les performances de chacun en matière de convergence, vous pouvez supprimer ou ajouter des liens. RIP, de part sa philosophie de protocole à vecteur de distance est difficilement contrôlable lorsque le réseau commence à prendre de l’ampleur.
 
 #### Interfaces passives
 
-Comme dit précédemment, le réseau implémente plusieurs protocoles et le but est que chacun n’influence pas la perspective de son voisin. Pour cela, on utilise des passives interfaces sur les routeurs de bordures. Cela nos permet de bloquer l’envoie de paquet iBGP à travers le réseau eBGP. L’AS 64513 est configuré selon RIPv3 donc la passive-interface est obtenu en désactivant ce protocole sur l’interface sortante du routeur de bordure. Pour l’AS 64514, on a OSPFv3 donc on introduit sur l’interface sortante du routeur la commande associée :
+Comme dit précédemment, le réseau implémente plusieurs protocoles et le but est que chacun n’influence pas la perspective de son voisin. Pour cela, on utilise des passives interfaces sur les routeurs de bordures. Cela nos permet de bloquer l’envoie de paquet iBGP à travers le réseau eBGP. L’AS A est configuré selon RIPv3 donc la passive-interface est obtenu en désactivant ce protocole sur l’interface sortante du routeur de bordure. Pour l’AS B, on a OSPFv3 donc on introduit sur l’interface sortante du routeur la commande associée :
 
 ```bash
 
-		R1(conf-if)#passive-interface *interface*
+		R1(config-if)#passive-interface *interface*
 
 ```
 
