@@ -7,7 +7,7 @@
 
 #### Interfaces passives
 
-###BGP
+### BGP
 
 #### iBGP FULL MESH
 
