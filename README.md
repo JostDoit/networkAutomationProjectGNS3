@@ -79,9 +79,9 @@ Assurez-vous de comprendre les implications de chaque règle de communauté avan
 Nous espérons que ce projet vous sera utile dans la mise en œuvre de politiques de routage BGP efficaces et dans la gestion avancée des communautés CISCO. 
 
 #### Telnet
-- Afin de réaliser le déploiement Telnet, nous avons modifié le fichier de création de fichier de configuration afin qu'il génère des fichiers comportants uniquement les commandes que l'utilisateur a besoin d'entrer et en les appelant R1.txt, R2.txt ...
-- Pour réaliser le déploiement telet, nous utilisons "script.py" qui va choisir un fichier GNS3 et lister tous les noeuds configurables dans ce dernier.
-- Nous nous connectons à chaque noeuds en Telnet et écrivons les commandes ligne à ligne en lisant pour chaque routeur les fichiers .txt correspondants.
+- Afin de réaliser le déploiement Telnet, nous avons modifié le fichier de création de fichier de configuration afin qu'il génère des fichiers comportant uniquement les commandes que l'utilisateur a besoin d'entrer et en les appelant R1.txt, R2.txt ...
+- Pour réaliser le déploiement Telnet, nous utilisons "script.py" qui va choisir un fichier GNS3 et lister tous les nœuds configurables dans ce dernier.
+- Nous nous connectons à chaque nœud en Telnet et écrivons les commandes ligne à ligne en lisant pour chaque routeur les fichiers .txt correspondants.
 - Il faut savoir qu'avant d'écrire une commande, nous nous assurons que le prompt commence par # afin d'éviter toute erreur.
 
 ### Métriques OSPF
