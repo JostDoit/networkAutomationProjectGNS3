@@ -1,5 +1,11 @@
 # Projet GNS3
+## Table des matières
 
+1. [IGP](#IGP)
+2. [Interfaces passives](#Interfaces passives)
+3. [BGP](#BGP)
+4. [Contribuer](#contribuer)
+5. [Licence](#licence)
 ## Dossier "RIP_OSPF" : 
 > Ce dossier contient la première configuration requise dans le projet. On y retrouve les IGP RIP et OSPF.
 
