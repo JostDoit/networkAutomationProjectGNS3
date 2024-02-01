@@ -11,11 +11,11 @@ Dans la première configuration, on se propose d’étudier deux domaines voisin
 
 Comme dit précédemment, le réseau implémente plusieurs protocoles et le but est que chacun n’influence pas la perspective de son voisin. Pour cela, on utilise des passives interfaces sur les routeurs de bordures. Cela nos permet de bloquer l’envoie de paquet iBGP à travers le réseau eBGP. L’AS 64513 est configuré selon RIPv3 donc la passive-interface est obtenu en désactivant ce protocole sur l’interface sortante du routeur de bordure. Pour l’AS 64514, on a OSPFv3 donc on introduit sur l’interface sortante du routeur la commande associée 
 
-```bash```
+```bash
 
 		passive-interface *interface*
 
-```bash```
+```
 
 ### BGP
 
