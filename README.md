@@ -30,8 +30,10 @@ Ce sous-protocole de BGP s’installe sur tous les routeurs de l’AS et permet 
 Ce sous protocole est cette-fois-ci configuré que sur les routeurs de bordures et s’occupe uniquement de communiquer avec l’AS voisin en fournissant des nouvelles routes, des préférences de routage ou encore des intentions de rupture de liens. 
 
 ### Type de déployement
-- Drag and drop
 
+Pour déployer ce réseau :
+- Nous avons utilisé un premier script permettant d'exploiter le fichier d'intention dans le but de générer les fichiers .cfg de chacun des routeurs.
+- Puis dans un second temps, nous avons un script utilisant la méthode **Drag and drop bot** qui copie les fichiers .cfg dans le dossier de configurations de chaque routeur.
 
 ## Dossier "configuration_finale"
 > Ce dossier contient un réseau PROVIDER-PEER-CLIENT utilisant en grande partie OSPF (car nous avions déjà démontré la configuration RIP précédemment).
