@@ -2,7 +2,7 @@
 ## Table des matières
 
 1. [IGP](#IGP)
-3. [Interfaces passives](#Interfaces passives)
+3. [Interfaces passives](#Interfaces_passives)
 4. [BGP](#BGP)
 5. [Type de déploiement](#contribuer)
 6. [Explication de l'architecture](#Archi)
