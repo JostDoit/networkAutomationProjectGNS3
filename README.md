@@ -100,3 +100,7 @@ Assurez-vous de comprendre les implications de chaque règle de communauté avan
 En effet, dans un sens nous passons par un lien tandis que dans l'autre sens, nous priorisons le traffic par un autre lien (en réalité on ajoute du poids à un liens pour passer par l'autre, on ne le priorise pas directement).
 
 ## Explication de l'intent file
+- L'intent file est divisé est 3 sous-parties.
+- La première contient les constantes utilisées dans le réseau, comme la version de rip ou d'ospf utilsés.
+- La deuxième contient les descriptions des différents AS : leur numéro d'AS, le type d'IGP utilisé (rip ou ospf) et le préfix réseau utilisé dans l'AS. Par la suite, nous avons rajouté dans l'intent file du deuxième réseau les relations entre un AS et ses voisins (customer/peer/provider), ainsi que les communautés qu'il utilise ou bien qu'il propose.
+- La troisième partie contient la description de chacun des routeurs. On y retrouve l'id du routeur, l'AS auquel il appartient et une liste décrivant ses différentes interfaces. Cette liste contient l'id du routeur voisin auquel cette interface est connectée, le nom de cette interface et si elle est connectée en igp ou en egp.
