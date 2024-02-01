@@ -2,9 +2,15 @@
 ## Table des matières
 
 1. [IGP](#IGP)
-2. [Interfaces passives](#Interfaces)
-3. [BGP](#BGP)
-4. [Type de déploiement](#contribuer)
+3. [Interfaces_passives](#Interfaces)
+4. [BGP](#BGP)
+5. [Type de déploiement](#contribuer)
+6. [Explication de l'architecture](#Archi)
+7. [BGP Local-Preference](#localPref)
+8. [Règles de commununautés](#Policies)
+9. [Telnet](#telnet)
+10. [Métriques OSPF](#metric)
+11. [Explication de l'intent file](#intent)
 
 ## Dossier "RIP_OSPF" : 
 > Ce dossier contient la première configuration requise dans le projet. On y retrouve les IGP RIP et OSPF.
