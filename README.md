@@ -76,11 +76,7 @@ Pour implémenter ces règles de communauté CISCO dans votre propre infrastruct
 
 Assurez-vous de comprendre les implications de chaque règle de communauté avant de les déployer dans votre infrastructure. Certaines règles bloquent le traffic dans certaines directions donc les communanautés sont à utiliser en connaissance de cause.
 
-#### Explication de l'intent file
-
-Nous espérons que ce projet vous sera utile dans la mise en œuvre de politiques de routage BGP efficaces et dans la gestion avancée des communautés CISCO. 
-
-#### Telnet
+### Telnet
 - Afin de réaliser le déploiement Telnet, nous avons modifié le fichier de création de fichier de configuration afin qu'il génère des fichiers comportant uniquement les commandes que l'utilisateur a besoin d'entrer et en les appelant R1.txt, R2.txt ...
 - Pour réaliser le déploiement Telnet, nous utilisons "script.py" qui va choisir un fichier GNS3 et lister tous les nœuds configurables dans ce dernier.
 - Nous nous connectons à chaque nœud en Telnet et écrivons automatiquement les commandes ligne à ligne pour chaque routeur des fichiers .txt correspondants.
@@ -90,3 +86,5 @@ Nous espérons que ce projet vous sera utile dans la mise en œuvre de politique
 - Nous avons manipulé les métriques OSPF, ces dernières nous permettent de prioriser des liens dans notre routage OSPF (lors du calcul de Dijkstra). Dans notre cas, nous avons utilisé les métriques OSPF dans l'AS du nord-est afin de le traffic d'optimiser le traffic. 
 
 En effet, dans un sens nous passons par un lien tandis que dans l'autre sens, nous priorisons le traffic par un autre lien (en réalité on ajoute du poids à un liens pour passer par l'autre, on ne le priorise pas directement).
+
+#### Explication de l'intent file
