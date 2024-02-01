@@ -13,7 +13,7 @@ Comme dit précédemment, le réseau implémente plusieurs protocoles et le but 
 
 ```bash
 
-		passive-interface *interface*
+		R1(conf-if)#passive-interface *interface*
 
 ```
 
