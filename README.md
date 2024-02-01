@@ -8,12 +8,15 @@
   - [eBGP](#eBGP)
 - [Type de déploiement](#contribuer)
   - [Configuration finale](#configuration_finale)
-  - [Explication de l'architecture] (#Explication)
+  - [Explication de l'architecture](#Explication)
 - [BGP Local-Preference](#localPref)
-8. [Règles de commununautés](#Policies)
-9. [Telnet](#telnet)
-10. [Métriques OSPF](#metric)
-11. [Explication de l'intent file](#intent)
+- [Règles de commununautés](#Policies)
+  - [Routes entre Deux AS en Relation PEER-PEER](#PEER)
+  - [Contrôle Régional des Routes](#regional)
+  - [Remarque importante](#remarque)
+- [Telnet](#telnet)
+- [Métriques OSPF](#metric)
+- [Explication de l'intent file](#intent)
 
 ## Dossier "RIP_OSPF" : 
 > Ce dossier contient la première configuration requise dans le projet. On y retrouve les IGP RIP et OSPF.
