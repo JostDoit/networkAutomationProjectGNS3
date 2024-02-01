@@ -18,6 +18,8 @@
 - [Métriques OSPF](#metric)
 - [Explication de l'intent file](#intent)
 
+> Le projet GNS3 à regarder en priorité est dans le dossier "configuration_finale"
+
 ## Dossier "RIP_OSPF" : 
 > Ce dossier contient la première configuration requise dans le projet. On y retrouve les IGP RIP et OSPF.
 
