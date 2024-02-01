@@ -87,4 +87,4 @@ Assurez-vous de comprendre les implications de chaque règle de communauté avan
 
 En effet, dans un sens nous passons par un lien tandis que dans l'autre sens, nous priorisons le traffic par un autre lien (en réalité on ajoute du poids à un liens pour passer par l'autre, on ne le priorise pas directement).
 
-#### Explication de l'intent file
+## Explication de l'intent file
