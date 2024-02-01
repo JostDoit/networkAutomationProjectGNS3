@@ -1,3 +1,0 @@
-en
-conf t
-hostname ROUTER_TEST
