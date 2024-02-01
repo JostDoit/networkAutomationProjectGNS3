@@ -2,10 +2,10 @@
 ## Table des matières
 
 1. [IGP](#IGP)
-2. [interface](#Interfaces passives)
+2. [Interfaces passives](#Interfaces)
 3. [BGP](#BGP)
 4. [Type de déploiement](#contribuer)
-5. [Licence](#licence)
+
 ## Dossier "RIP_OSPF" : 
 > Ce dossier contient la première configuration requise dans le projet. On y retrouve les IGP RIP et OSPF.
 
